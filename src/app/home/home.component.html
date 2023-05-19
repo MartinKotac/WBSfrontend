@@ -42,23 +42,17 @@
         <div class="col-lg-6 mb-5 mb-lg-0">
           <div class="card">
             <div class="card-body py-5 px-md-5">
-              <form>
+              <form [formGroup]="corpusForm" (ngSubmit)="onPredict()">
                 <!-- 2 column grid layout with text inputs for the first and last names -->
                 <div class="row">
                   <div class="col-md mb-4">
                     <div class="form-outline">
                       <label class="form-label" for="corpus">Drop your medicine content here:</label>
-                      <textarea class="form-control" id="corpus" rows="15"></textarea>
-
+                      <textarea class="form-control" id="corpus" formControlName="corpus" rows="15"></textarea>
                     </div>
                   </div>
                 </div>
-
-                <!-- Submit button -->
-                <button type="submit" class="btn btn-outline-primary">
-                  Predict
-                </button>
-
+                <button [disabled]="corpusForm.invalid" type="submit" class="btn btn-primary">Predict</button>
               </form>
             </div>
           </div>
@@ -68,4 +62,3 @@
   </div>
   <!-- Jumbotron -->
 </section>
-<!-- Section: Design Block -->

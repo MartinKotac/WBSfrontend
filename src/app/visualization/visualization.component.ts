@@ -8,15 +8,26 @@ import {PredictionService} from "../services/prediction.service";
 })
 export class VisualizationComponent implements OnInit {
 
-  rdfGraphJsonLd!: string;
+  rdfGraph: Array<Triple> = [];
 
   constructor(private predictionService: PredictionService) {
   }
 
   ngOnInit(): void {
     this.predictionService.getPredictionData().subscribe(data => {
-      this.rdfGraphJsonLd = data;
-      console.log("Visualization Component", this.rdfGraphJsonLd)
+      this.rdfGraph = data['rdf_graph'];
+      console.log("Visualization Component", this.rdfGraph)
     })
   }
+
+  private cleanUrl(url:string): string {
+    // @ts-ignore
+    return url.split('/').pop().slice(1, -1);
+  }
+}
+
+interface Triple {
+  subjectRdf:string,
+  propertyRdf:string,
+  objectRdf:string
 }

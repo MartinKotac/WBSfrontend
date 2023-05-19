@@ -1,1 +1,9 @@
-<p>Okay its working</p>
+<div *ngIf="rdfGraph">
+  <div *ngFor="let triple of rdfGraph" class="card w-75">
+    <div class="card-body">
+      <h5 class="card-title">RDF triple</h5>
+      <p class="card-text">{{triple.subjectRdf}} -> {{triple.propertyRdf}} -> {{triple.objectRdf}}</p>
+    </div>
+  </div>
+</div>
+

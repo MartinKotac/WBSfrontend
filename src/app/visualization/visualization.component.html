@@ -1,4 +1,38 @@
-<div *ngIf="rdfGraph">
+<ngx-graph
+  [center$]="center$"
+  class="chart-container"
+  [view]="[1650,800]"
+  layout="d3ForceDirected"
+  [showMiniMap]="true"
+  [links]="links"
+  [nodes]="nodes"
+  xmlns:svg="http://java.sun.com/JSP/Page">
+  <ng-template #nodeTemplate let-node>
+    <svg:g class="node">
+      <svg:rect [attr.width]="node.dimension.width" [attr.height]="node.dimension.height"
+                [attr.fill]="node.data.color"/>
+      <svg:text alignment-baseline="central" [attr.x]="10"
+                [attr.y]="node.dimension.height / 2">{{node.label}}</svg:text>
+    </svg:g>
+  </ng-template>
+
+  <ng-template #linkTemplate let-link>
+    <svg:g class="edge">
+      <svg:path class="line" stroke-width="2">
+      </svg:path>
+      <svg:text class="edge-label" text-anchor="middle">
+        <textPath class="text-path" [attr.href]="'#' + link.id" [style.dominant-baseline]="link.dominantBaseline"
+                  startOffset="50%">
+          {{link.label}}
+        </textPath>
+      </svg:text>
+    </svg:g>
+  </ng-template>
+</ngx-graph>
+
+<button class="btn btn-primary" (click)="centerGraph()">Center Graph</button>
+<button class="btn btn-primary" (click)="this.showTriples = !this.showTriples">Show Triples</button>
+<div *ngIf="showTriples">
   <div *ngFor="let triple of rdfGraph" class="card w-75">
     <div class="card-body">
       <h5 class="card-title">RDF triple</h5>

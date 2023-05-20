@@ -1,5 +1,6 @@
 import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
+import {NgxGraphModule} from "@swimlane/ngx-graph";
 
 import {AppRoutingModule} from './app-routing.module';
 import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
@@ -12,6 +13,7 @@ import { VisualizationComponent } from './visualization/visualization.component'
 import { ExamplesComponent } from './examples/examples.component';
 import { SpinnerComponent } from './spinner/spinner.component';
 import { LoadingInterceptor } from "./spinner/loading/loading.interceptor";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 
 
 @NgModule({
@@ -28,7 +30,9 @@ import { LoadingInterceptor } from "./spinner/loading/loading.interceptor";
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgxGraphModule,
+    BrowserAnimationsModule
   ],
   providers: [
     {

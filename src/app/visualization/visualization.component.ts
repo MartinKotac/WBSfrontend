@@ -12,26 +12,10 @@ export class VisualizationComponent implements OnInit {
 
   rdfGraph: Array<Triple> = [];
   center$: Subject<boolean> = new Subject();
-
-  nodes: Node[] = [
-    {
-      id: 'first',
-      label: 'Martin'
-    }, {
-      id: 'second',
-      label: 'Nadica'
-    }
-  ];
-
-  links: Edge[] = [
-    {
-      id: 'a',
-      source: 'first',
-      target: 'second',
-      label: 'is parent of'
-    },
-  ];
+  nodes: Node[] = [];
+  links: Edge[] = [];
   showTriples: boolean = false;
+  nodesIdsCounter: number = 0;
 
   constructor(private predictionService: PredictionService) {
   }
@@ -40,34 +24,70 @@ export class VisualizationComponent implements OnInit {
     this.predictionService.getPredictionData().subscribe(data => {
       this.rdfGraph = data['rdf_graph'];
       this.rdfGraph.forEach(triple => {
-        let subjectCleaned = this.cleanUrl(triple.subjectRdf);
-        let propertyCleaned = this.cleanUrl(triple.propertyRdf);
-        let objectCleaned = this.cleanUrl(triple.objectRdf);
-        console.log(subjectCleaned,"->",propertyCleaned,"->",objectCleaned);
-        const nodeIdToCheck = this.cleanUrl(triple.subjectRdf)
-        const foundNode = this.nodes.find(node => node.id === nodeIdToCheck);
-        if(foundNode){
-
-        }else {
-          // let newNode = {
-          //   id: ,
-          //   label: 'Martin'
-          // }
-        }
-
+        this.pushIntoGraph(triple)
       })
     })
   }
 
+  pushIntoGraph(triple: Triple) {
+    const subjectCleaned = this.cleanUrl(triple.subjectRdf, false);
+    const propertyCleaned = this.cleanUrl(triple.propertyRdf, false);
+    const objectCleaned = this.cleanUrl(triple.objectRdf, true);
+
+    console.log(subjectCleaned, "->", propertyCleaned, "->", objectCleaned);
+
+    let subjectNode = this.findOrCreateNode(subjectCleaned);
+    let objectNode = this.findOrCreateNode(objectCleaned);
+
+    const propertyEdge = this.createEdge(
+      Math.random().toString(),
+      subjectNode.id,
+      objectNode.id,
+      propertyCleaned
+    );
+
+    this.links.push(propertyEdge);
+  }
+
+  findOrCreateNode(nodeId: string): Node {
+    let foundNode = this.nodes.find(node => node.id === nodeId);
+
+    if (!foundNode) {
+      foundNode = this.createNode(nodeId, nodeId);
+      this.nodes.push(foundNode);
+    }
+    return foundNode;
+  }
 
   centerGraph() {
     this.center$.next(true)
   }
 
-  private cleanUrl(url: string): string {
-    // @ts-ignore
-    return url.split('/').pop().slice(0, -1);
+  createEdge(id: string, source: string, target: string, label: string): Edge {
+    return {
+      id,
+      source,
+      target,
+      label
+    };
   }
+
+  createNode(id: string, label: string): Node {
+    return {
+      id,
+      label
+    };
+  }
+
+  cleanUrl(url: string, isObject: boolean): string {
+    if (isObject)
+      // @ts-ignore
+      return url.split('/').pop().slice(0, -3);
+    else
+      // @ts-ignore
+      return url.split('/').pop().slice(0, -1);
+  }
+
 }
 
 interface Triple {

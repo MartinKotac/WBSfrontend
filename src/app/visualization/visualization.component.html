@@ -1,43 +1,63 @@
-<ngx-graph
-  [center$]="center$"
-  class="chart-container"
-  [view]="[1650,800]"
-  layout="d3ForceDirected"
-  [showMiniMap]="true"
-  [links]="links"
-  [nodes]="nodes"
-  xmlns:svg="http://java.sun.com/JSP/Page">
-  <ng-template #nodeTemplate let-node>
-    <svg:g class="node">
-      <svg:rect [attr.width]="node.dimension.width" [attr.height]="node.dimension.height"
-                [attr.fill]="node.data.color"/>
-      <svg:text alignment-baseline="central" [attr.x]="10"
-                [attr.y]="node.dimension.height / 2">{{node.label}}</svg:text>
-    </svg:g>
-  </ng-template>
+<div class="d-flex justify-content-center align-items-center">
+  <button class="btn btn-primary" (click)="this.showTriples = !this.showTriples">
+    {{ showTriples ? 'Show Graph' : 'Show Triples' }}
+  </button>
+</div>
+<div *ngIf="!showTriples">
+  <ngx-graph
+    [center$]="center$"
+    class="chart-container"
+    [view]="[1500,700]"
+    layout="d3ForceDirected"
+    [showMiniMap]="true"
+    [links]="links"
+    [nodes]="nodes"
+    xmlns:svg="http://java.sun.com/JSP/Page">
+    <ng-template #nodeTemplate let-node>
+      <svg:g class="node">
+        <svg:rect [attr.width]="node.dimension.width" [attr.height]="node.dimension.height"
+                  [attr.fill]="node.data.color"/>
+        <svg:text alignment-baseline="central" [attr.x]="10"
+                  [attr.y]="node.dimension.height / 2">{{node.label}}</svg:text>
+      </svg:g>
+    </ng-template>
 
-  <ng-template #linkTemplate let-link>
-    <svg:g class="edge">
-      <svg:path class="line" stroke-width="2">
-      </svg:path>
-      <svg:text class="edge-label" text-anchor="middle">
-        <textPath class="text-path" [attr.href]="'#' + link.id" [style.dominant-baseline]="link.dominantBaseline"
-                  startOffset="50%">
-          {{link.label}}
-        </textPath>
-      </svg:text>
-    </svg:g>
-  </ng-template>
-</ngx-graph>
-
-<button class="btn btn-primary" (click)="centerGraph()">Center Graph</button>
-<button class="btn btn-primary" (click)="this.showTriples = !this.showTriples">Show Triples</button>
+    <ng-template #linkTemplate let-link>
+      <svg:g class="edge">
+        <svg:path class="line" stroke-width="2">
+        </svg:path>
+        <svg:text class="edge-label" text-anchor="middle">
+          <textPath class="text-path" [attr.href]="'#' + link.id" [style.dominant-baseline]="link.dominantBaseline"
+                    startOffset="50%">
+            {{link.label}}
+          </textPath>
+        </svg:text>
+      </svg:g>
+    </ng-template>
+  </ngx-graph>
+  <button class="btn btn-warning" (click)="center$.next(true)">Center Graph</button>
+</div>
 <div *ngIf="showTriples">
-  <div *ngFor="let triple of rdfGraph" class="card w-75">
-    <div class="card-body">
-      <h5 class="card-title">RDF triple</h5>
-      <p class="card-text">{{triple.subjectRdf}} -> {{triple.propertyRdf}} -> {{triple.objectRdf}}</p>
-    </div>
-  </div>
+  <table class="table table-hover">
+    <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Subject</th>
+      <th scope="col">Property</th>
+      <th scope="col">Object</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let triple of rdfGraph; let i = index">
+      <th scope="row">{{i + 1}}</th>
+      <td><a [href]="triple.subjectRdf">{{triple.subjectRdf}}</a></td>
+      <td><a [href]="triple.propertyRdf">{{triple.propertyRdf}}</a></td>
+      <td><a *ngIf="triple.objectRdf.includes('http')" [href]="triple.objectRdf">
+        {{triple.objectRdf}}
+      </a>
+        <span *ngIf="!triple.objectRdf.includes('http')">{{triple.objectRdf}}</span></td>
+    </tr>
+    </tbody>
+  </table>
 </div>
 

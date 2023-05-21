@@ -50,9 +50,9 @@
     <tbody>
     <tr *ngFor="let triple of rdfGraph; let i = index">
       <th scope="row">{{i + 1}}</th>
-      <td><a [href]="triple.subjectRdf">{{triple.subjectRdf}}</a></td>
-      <td><a [href]="triple.propertyRdf">{{triple.propertyRdf}}</a></td>
-      <td><a *ngIf="triple.objectRdf.includes('http')" [href]="triple.objectRdf">
+      <td><a [href]="cleanLink(triple.subjectRdf)">{{triple.subjectRdf}}</a></td>
+      <td><a [href]="cleanLink(triple.propertyRdf)">{{triple.propertyRdf}}</a></td>
+      <td><a *ngIf="triple.objectRdf.includes('http')" [href]="cleanLink(triple.objectRdf)">
         {{triple.objectRdf}}
       </a>
         <span *ngIf="!triple.objectRdf.includes('http')">{{triple.objectRdf}}</span></td>

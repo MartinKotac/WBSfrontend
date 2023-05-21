@@ -10,7 +10,6 @@ import {HomeComponent} from './home/home.component';
 import {HeaderComponent} from './header/header.component';
 import {FooterComponent} from './footer/footer.component';
 import { VisualizationComponent } from './visualization/visualization.component';
-import { ExamplesComponent } from './examples/examples.component';
 import { SpinnerComponent } from './spinner/spinner.component';
 import { LoadingInterceptor } from "./spinner/loading/loading.interceptor";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
@@ -23,7 +22,6 @@ import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
     HeaderComponent,
     FooterComponent,
     VisualizationComponent,
-    ExamplesComponent,
     SpinnerComponent
   ],
   imports: [

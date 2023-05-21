@@ -88,6 +88,9 @@ export class VisualizationComponent implements OnInit {
       return url.split('/').pop().slice(0, -1);
   }
 
+  cleanLink(url: string) {
+    return url.replace(/[<>]/g, "");
+  }
 }
 
 interface Triple {

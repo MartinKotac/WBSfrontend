@@ -23,6 +23,7 @@ export class VisualizationComponent implements OnInit {
   ngOnInit(): void {
     this.predictionService.getPredictionData().subscribe(data => {
       this.rdfGraph = data['rdf_graph'];
+      console.log(data['rdf_graph']);
       this.rdfGraph.forEach(triple => {
         this.pushIntoGraph(triple)
       })

@@ -24,13 +24,9 @@ export class HomeComponent implements OnInit {
   }
 
   onPredict(): void {
-    let textForPrediction = this.corpusForm.value.corpus
     if (this.corpusForm.valid) {
       const url = 'http://localhost:8000/predict'
-      const body = {
-        text: textForPrediction
-      }
-      this.http.post<any>(url, body).subscribe(response => {
+      this.http.get<any>(url).subscribe(response => {
         console.log("Response: ", response);
         this.predictionService.setPredictionData(response);
         this.router.navigate(['/visualization'])

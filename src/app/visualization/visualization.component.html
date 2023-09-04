@@ -4,9 +4,8 @@
   </button>
 </div>
 <div *ngIf="!showTriples">
-  <ngx-graph
+  <ngx-graph class="chart-container"
     [center$]="center$"
-    class="chart-container"
     [view]="[1500,700]"
     layout="d3ForceDirected"
     [showMiniMap]="true"
